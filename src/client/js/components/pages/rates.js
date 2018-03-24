@@ -37,7 +37,7 @@ class CustomPage extends Page
 		}
 	}
 
-	getLookup(event)
+	getLookup(event, redraw=true)
 	{
 		if (!this.lookup.number) {
 			this.lookup.data = null;
@@ -65,11 +65,13 @@ class CustomPage extends Page
 		}).then((lookup) => {
 			lookup.from = this.lookup.number;
 			this.lookup.data = lookup;
-			m.redraw();
+			if (redraw) {
+				m.redraw();
+			}
 		}).catch(console.error);
 	}
 
-	init()
+	init(args, requestedPath)
 	{
 		return new Promise((resolve, reject) => {
 			if (this.app.cache.has('countries')) {
@@ -96,6 +98,14 @@ class CustomPage extends Page
 					});
 					this.app.cache.set('rates', rates);
 				});
+			}
+		}).then(() => {
+			this.lookup.unformattedNumber = args.number || '';
+			this.lookup.number = Utils.Tools.number.format(this.lookup.unformattedNumber) || null;
+			if (!this.lookup.number) {
+				return Promise.resolve();
+			} else {
+				return this.getLookup({}, false);
 			}
 		}).catch(console.error);
 	}

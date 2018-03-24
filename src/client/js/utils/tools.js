@@ -1,7 +1,7 @@
 module.exports = {
 	number: {
 		format: function(number) {
-			return number.toLowerCase()
+			return (number || '').toLowerCase()
 				.replace(/[a-c]/g, '2')
 				.replace(/[d-f]/g, '3')
 				.replace(/[g-i]/g, '4')

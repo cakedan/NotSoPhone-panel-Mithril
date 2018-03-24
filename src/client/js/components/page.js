@@ -22,7 +22,7 @@ class Page
 	{
 		return Promise.resolve().then(() => {
 			if (!this.auth || this.app.authed) {
-				return this.init && this.init();
+				return this.init && this.init(args, requestedPath);
 			}
 
 			if (localStorage.token) {localStorage.removeItem('token');}
